@@ -1,9 +1,12 @@
 package org.example.domains.auth.service
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import okhttp3.FormBody
 import org.example.common.exception.CustomException
 import org.example.common.exception.ErrorCode
 import org.example.common.httpclient.CallClient
+import org.example.common.json.JsonUtil
 import org.example.config.OAuth2Config
 import org.example.interfaces.OAuth2TokenResponse
 import org.example.interfaces.OAuth2UserResponse
@@ -35,11 +38,38 @@ class GoogleAuthService(
 
         val headers = mapOf("Accept" to "application/json")
         val jsonString = httpClient.POST(tokenURL, headers, body)
+
+        val response: GoogleTokenResponse = JsonUtil.decodeFromJson(jsonString, GoogleTokenResponse.serializer())
+
+        return response
     }
 
     override fun getUserInfo(accessToken: String): OAuth2UserResponse {
-        TODO("Not yet implemented")
+            val headers = mapOf(
+            "Content-Type" to "application/json",
+            "Authorization" to "Bearer $accessToken"
+        )
+
+        val jsonString = httpClient.GET(userInfoURL, headers)
+        val response: GoogleUserResponse = JsonUtil.decodeFromJson(jsonString, GoogleUserResponse.serializer())
+
+        return response
     }
 }
 
+@Serializable
+data class GoogleTokenResponse(
+    @SerialName("access_token") override val accessToken: String,
+    @SerialName("expires_in") val expiresIn: Int,
+    @SerialName("refresh_token") val refreshToken: String?,
+    @SerialName("scope") val scope: String,
+    @SerialName("token_type") val tokenType: String,
+    @SerialName("id_token") val idToken: String
+): OAuth2TokenResponse
 
+@Serializable
+data class GoogleUserResponse(
+    override val id: String,
+    override val email: String,
+    override val name: String
+): OAuth2UserResponse
