@@ -23,6 +23,9 @@ dependencies {
     // jwt
     implementation("com.auth0:java-jwt:3.12.0")
 
+    // ulid
+    implementation("com.github.f4b6a3:ulid-creator:5.2.3")
+
     // mysql
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("mysql:mysql-connector-java:8.0.33")
