@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service
 class AuthService(
     private val oAuthServices: Map<String, OAuthServiceInterface>,
     private val jwtProvider: JwtProvider,
-    private val logger: Logger = Logging.getLogger(AuthService::class.java)
+    private val logger: Logger = Logging.getLogger(AuthService::class.java),
+    private val transaction : Transactional
 ) {
     @Transactional
     fun handleAuth(state: String, code: String): String = Logging.logFor(logger){ log ->
@@ -27,6 +28,10 @@ class AuthService(
         val accessToken = callService.getToken(code)
         val userInfo = callService.getUserInfo(accessToken.accessToken)
         val token = jwtProvider.createToken(provider, userInfo.email, userInfo.name, userInfo.id)
+
+        /*
+        transaction.run { }
+        */
 
         // userInfo
     }
