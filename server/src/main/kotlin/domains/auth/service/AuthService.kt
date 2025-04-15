@@ -53,4 +53,8 @@ class AuthService(
 
     }
 
+    fun verifyToken(authorization: String) {
+        jwtProvider.verifyToken(authorization.removePrefix("Bearer "))
+    }
+
 }
