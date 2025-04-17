@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "account")
+@Table(name = "user")
 data class User(
     @Id
     @Column(name = "ulid", length = 26)
