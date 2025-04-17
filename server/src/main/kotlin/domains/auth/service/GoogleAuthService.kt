@@ -60,11 +60,6 @@ class GoogleAuthService(
 @Serializable
 data class GoogleTokenResponse(
     @SerialName("access_token") override val accessToken: String,
-    @SerialName("expires_in") val expiresIn: Int,
-    @SerialName("refresh_token") val refreshToken: String?,
-    @SerialName("scope") val scope: String,
-    @SerialName("token_type") val tokenType: String,
-    @SerialName("id_token") val idToken: String
 ): OAuth2TokenResponse
 
 @Serializable

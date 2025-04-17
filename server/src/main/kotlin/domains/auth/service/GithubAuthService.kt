@@ -41,9 +41,9 @@ class GithubAuthService(
         val jsonString = httpClient.POST(tokenURL, headers, body)
 
         // jsonString -> json 처리
-        val respons: GithubTokenResponse  = JsonUtil.decodeFromJson(jsonString, GithubTokenResponse.serializer())
+        val response: GithubTokenResponse  = JsonUtil.decodeFromJson(jsonString, GithubTokenResponse.serializer())
 
-        return respons
+        return response
     }
 
     override fun getUserInfo(accessToken: String): OAuth2UserResponse {
